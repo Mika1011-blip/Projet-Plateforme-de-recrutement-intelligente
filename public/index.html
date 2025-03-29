@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CV Extraction & Job Compatibility</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>CV Extraction & Job Compatibility</h1>
+    <div class="panels">
+      <!-- Left Panel: CV Upload -->
+      <div class="panel" id="uploadPanel">
+        <h2>Upload Your CV</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+          <label for="cv">CV (PDF):</label>
+          <input type="file" name="cv" id="cv" accept="application/pdf" required>
+
+          <label for="ltr_mtv">Letter/Motivation (optional, PDF):</label>
+          <input type="file" name="ltr_mtv" id="ltr_mtv" accept="application/pdf">
+
+          <button type="submit">Upload</button>
+        </form>
+        <h3>Extraction Result</h3>
+        <pre id="result"></pre>
+      </div>
+      <!-- Right Panel: Job Offers -->
+      <div class="panel" id="jobOffersPanel">
+        <h2>Job Offers</h2>
+        <div id="jobOffersContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Declare a global variable for candidate data
+    let candidateData = null;
+
+    // Function to fetch and display job offers
+    async function fetchJobOffers() {
+      try {
+        // Build the request body: if candidateData is available, send it; otherwise, send an empty candidateData object.
+        const requestBody = candidateData ? { candidateData } : {};
+        const response = await fetch('/api/job-offers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        });
+        const offers = await response.json();
+        displayJobOffers(offers);
+      } catch (error) {
+        console.error("Error fetching job offers:", error);
+      }
+    }
+
+    // Function to render job offers on the page
+    function displayJobOffers(offers) {
+      const container = document.getElementById('jobOffersContainer');
+      container.innerHTML = '';
+      offers.forEach(offer => {
+        const offerElement = createJobOfferElement(offer);
+        container.appendChild(offerElement);
+      });
+    }
+
+    // Function to create HTML for a single job offer element
+    function createJobOfferElement(offer) {
+      const container = document.createElement('div');
+      container.classList.add('job-offer');
+
+      const title = document.createElement('h2');
+      title.textContent = offer.poste;
+      container.appendChild(title);
+
+      const description = document.createElement('p');
+      description.textContent = offer.description;
+      container.appendChild(description);
+
+      const compLabel = document.createElement('div');
+      compLabel.classList.add('compatibility-label');
+      // Check if compatibility data exists; if not, default to N/A
+      const overallFit = offer.compatibility && offer.compatibility.overall_fit ? offer.compatibility.overall_fit : "N/A";
+      compLabel.textContent = `Compatibilité globale: ${overallFit}${overallFit !== "N/A" ? "%" : ""}`;
+      container.appendChild(compLabel);
+
+      const barContainer = document.createElement('div');
+      barContainer.classList.add('compatibility-bar-container');
+
+      const bar = document.createElement('div');
+      bar.classList.add('compatibility-bar');
+      // Set initial width to 0%
+      bar.style.width = '0%';
+      barContainer.appendChild(bar);
+      container.appendChild(barContainer);
+
+      // After a short delay, update the width to trigger the transition
+      if (overallFit !== "N/A" && typeof overallFit === 'number') {
+        setTimeout(() => {
+          bar.style.width = overallFit + '%';
+        }, 100);
+      }
+
+      // "More" details toggle
+      const moreBtn = document.createElement('div');
+      moreBtn.classList.add('show-more');
+      moreBtn.textContent = 'Plus de détails';
+      container.appendChild(moreBtn);
+
+      const details = document.createElement('div');
+      details.classList.add('more-details');
+      if (offer.compatibility) {
+        details.innerHTML = `
+      <strong>Compétences:</strong> ${offer.compatibility.skill_match || 'N/A'} % <br>
+      <strong>Expérience:</strong> ${offer.compatibility.experience_match || 'N/A'} % <br>
+      <strong>Éducation:</strong> ${offer.compatibility.education_match || 'N/A'} % <br>
+      <strong>Commentaires:</strong> ${offer.compatibility.comments || 'N/A'}
+    `;
+      } else {
+        details.innerHTML = `
+      <strong>Compétences:</strong> N/A<br>
+      <strong>Expérience:</strong> N/A<br>
+      <strong>Éducation:</strong> N/A<br>
+      <strong>Commentaires:</strong> N/A
+    `;
+      }
+      container.appendChild(details);
+
+      moreBtn.addEventListener('click', () => {
+        if (details.style.display === 'block') {
+          details.style.display = 'none';
+          moreBtn.textContent = 'Plus de détails';
+        } else {
+          details.style.display = 'block';
+          moreBtn.textContent = 'Réduire';
+        }
+      });
+
+      return container;
+    }
+
+
+    // Function to handle CV upload and candidate data extraction
+    async function handleCVUpload() {
+      const formData = new FormData();
+      const cv_input = document.getElementById('cv');
+      const ltr_mtv_input = document.getElementById('ltr_mtv');
+
+      if (cv_input.files.length > 0) {
+        formData.append('cv', cv_input.files[0]);
+        if (ltr_mtv_input.files.length > 0) {
+          formData.append('ltr_mtv', ltr_mtv_input.files[0]);
+        }
+        try {
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const uploadResult = await response.json();
+          document.getElementById('result').textContent = uploadResult.result;
+
+          // Update the global candidateData variable with the extracted data
+          candidateData = uploadResult.result;
+
+          // Re-fetch job offers with the candidate data to update compatibility metrics
+          fetchJobOffers();
+        } catch (err) {
+          document.getElementById('result').textContent = 'Error: ' + err.message;
+        }
+      }
+    }
+
+    // Attach the CV upload handler to the form
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      handleCVUpload();
+    });
+
+    // Initially fetch job offers without candidate data (will show metrics as N/A)
+    fetchJobOffers();
+  </script>
+</body>
+
+</html>
