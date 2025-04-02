@@ -94,7 +94,7 @@
 
   <header>
     <div class="logo">JobSyn</div>
-    <div class="back-link"><a href="modidiPro.html">← Retour au profil</a></div>
+    <div class="back-link"><a href="profil.html">← Retour au profil</a></div>
   </header>
 
   <div class="container">
@@ -116,8 +116,8 @@
       </div>
 
       <div class="form-group">
-        <label for="apropos">À propos</label>
-        <textarea id="apropos" name="apropos"></textarea>
+        <label for="apropos">Description</label>
+        <textarea id="apropos" name="description"></textarea>
       </div>
 
       <div class="form-group">
@@ -125,45 +125,10 @@
         <textarea id="experience" name="experience"></textarea>
       </div>
 
-      <div class="form-group">
-        <label for="education">Éducation</label>
-        <textarea id="education" name="education"></textarea>
-      </div>
-
       <button type="submit">Enregistrer</button>
       <!--  va enregister les infos du candidat en BD, rediriger sur la page profil et les recupérer directement dessus -->
     </form>
   </div>
-
-  <script>
-    window.onload = function () {
-      const profil = JSON.parse(localStorage.getItem("profil")) || {};
-      if (profil.nom) document.getElementById("nom").value = profil.nom;
-      if (profil.poste) document.getElementById("poste").value = profil.poste;
-      if (profil.entreprise) document.getElementById("entreprise").value = profil.entreprise;
-      if (profil.apropos) document.getElementById("apropos").value = profil.apropos;
-      if (profil.experience) document.getElementById("experience").value = profil.experience;
-      if (profil.education) document.getElementById("education").value = profil.education;
-    };
-
-    document.getElementById("profilForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const profil = {
-        nom: document.getElementById("nom").value,
-        poste: document.getElementById("poste").value,
-        entreprise: document.getElementById("entreprise").value,
-        apropos: document.getElementById("apropos").value,
-        experience: document.getElementById("experience").value,
-        education: document.getElementById("education").value,
-      };
-
-      localStorage.setItem("profil", JSON.stringify(profil));
-
-      alert("Modifications enregistrées !");
-      window.location.href = "profil.html";
-    });
-  </script>
 
 </body>
 </html>
