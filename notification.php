@@ -34,7 +34,7 @@
                 </ul>
             </div>
         </div>
-</nav>
+/nav>
 
 <!-- Notifications -->
 <div class="container mt-5">
