@@ -1,3 +1,61 @@
+<?php
+// Connexion à la base de données
+$host = 'localhost';
+$dbname = 'hackathon';
+$username = 'root';
+$password = '';
+$profil = [];
+
+
+  if(isset($_POST['add'])) {
+      try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Erreur de connexion : " . $e->getMessage());
+    }
+
+    // Traitement du formulaire lorsqu'il est soumis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      // Récupération des données du formulaire
+      $nom = $_POST['nom'] ?? '';
+      $poste = $_POST['poste'] ?? '';
+      $entreprise = $_POST['entreprise'] ?? '';
+      $description = $_POST['description'] ?? '';
+      $experience = $_POST['experience'] ?? '';
+      
+        try {
+                // Préparation de la requête d'insertion
+                $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) 
+                                VALUES (:nom_candidat, :intituler_poste, :ecole, :description, :experience)");
+                
+                // Exécution de la requête avec les paramètres
+                $stmt->execute([
+                ':nom_candidat' => $nom,
+                ':intituler_poste' => $poste,
+                ':ecole' => $entreprise,
+                ':description' => $description,
+                ':experience' => $experience
+                ]);
+                
+        } catch (PDOException $e) {
+                die("Erreur lors de l'insertion : " . $e->getMessage());
+        }
+      }
+    
+    // Récupération des données du profil 
+    try {
+        $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
+        $profil = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die("Erreur lors de la récupération du profil : " . $e->getMessage());
+    }
+  }
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -93,13 +151,51 @@
         </div>
       </div>
       <div>
-        <a href="modifProfil.html" class="text-decoration-none text-dark">Modifier le profil <i class="bi bi-pencil"></i></a>
+      <?php if ($profil){ ?>
+        <a href="modifProfil.php" class="btn btn-secondary">Modifier le profil <i class="bi bi-pencil"></i></a>
+      <?php } ?>
       </div>
     </div>
+    <form action="modifProfil.php" method="post">
+      
+    </form>
 
-    <div class="section-title">A Propos</div>
-    <div class="section-title">Expérience</div>
-    <div class="section-title">Éducation</div>
+    <div class="container">
+    <h2>Mon Profil</h2>
+    
+    <?php if ($profil): ?>
+      <div class="profil-info">
+        <h3>Nom et Prénom</h3>
+        <p><?php echo htmlspecialchars($profil['nom_candidat'] ?? 'Non renseigné'); ?></p>
+      </div>
+
+      <div class="profil-info">
+        <h3>Intitulé du poste</h3>
+        <p><?php echo htmlspecialchars($profil['intituler_poste'] ?? 'Non renseigné'); ?></p>
+      </div>
+
+      <div class="profil-info">
+        <h3>Entreprise / École actuelle</h3>
+        <p><?php echo htmlspecialchars($profil['ecole'] ?? 'Non renseigné'); ?></p>
+      </div>
+
+      <div class="profil-info">
+        <h3>Description</h3>
+        <p><?php echo nl2br(htmlspecialchars($profil['description'] ?? 'Non renseigné')); ?></p>
+      </div>
+
+      <div class="profil-info">
+        <h3>Expérience</h3>
+        <p><?php echo nl2br(htmlspecialchars($profil['experience'] ?? 'Non renseigné')); ?></p>
+      </div>
+
+      
+    <?php else: ?>
+      <div class="profil-info">
+        <p>Aucun profil trouvé. <a href="addprofil.php" class="btn btn-primary">Créer un profil</a></p>
+      </div>
+    <?php endif; ?>
+  </div>
 
     <div class="logout">
       <i class="bi bi-gear"></i> <a href="deco.html">Déconnexion</a>

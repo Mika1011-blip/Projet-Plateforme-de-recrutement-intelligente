@@ -28,19 +28,19 @@
       </form>
       <ul class="navbar-nav d-flex flex-row gap-4">
         <li class="nav-item text-center">
-         <a class="nav-link" href="index.html"> <i class="bi bi-house fs-5"></i><br><small>Accueil</small></a>
+         <a class="nav-link" href="index.php"> <i class="bi bi-house fs-5"></i><br><small>Accueil</small></a>
         </li>
         <li class="nav-item text-center">
-            <a class="nav-link" href="emploie.html"> <i class="bi bi-person fs-5"></i><br><small>Emplois</small> </a>
+            <a class="nav-link" href="emploie.php"> <i class="bi bi-person fs-5"></i><br><small>Emplois</small> </a>
         </li>
         <li class="nav-item text-center">
-            <a class="nav-link" href="message.html"><i class="bi bi-envelope fs-5"></i><br><small>Messages</small></a>
+            <a class="nav-link" href="message.php"><i class="bi bi-envelope fs-5"></i><br><small>Messages</small></a>
         </li>
         <li class="nav-item text-center">
-          <a class="nav-link" href="notification.html"> <i class="bi bi-bell fs-5"></i><br><small>Notifications</small></a>
+          <a class="nav-link" href="notification.php"> <i class="bi bi-bell fs-5"></i><br><small>Notifications</small></a>
         </li>
         <li class="nav-item text-center">
-            <a class="nav-link" href="profil.html"><i class="bi bi-person-circle fs-5"></i><br><small>Profil</small></a>
+            <a class="nav-link" href="profil.php"><i class="bi bi-person-circle fs-5"></i><br><small>Profil</small></a>
         </li>
       </ul>
     </div>

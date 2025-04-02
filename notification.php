@@ -17,19 +17,19 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item text-center mx-2">
-                        <a class="nav-link" href="index.html"><i class="bi bi-house"></i><br>Accueil</a>
+                        <a class="nav-link" href="index.php"><i class="bi bi-house"></i><br>Accueil</a>
                     </li>
                     <li class="nav-item text-center mx-2">
-                        <a class="nav-link" href="emploie.html"><i class="bi bi-people"></i><br>Emplois</a>
+                        <a class="nav-link" href="emploie.php"><i class="bi bi-people"></i><br>Emplois</a>
                     </li>
                     <li class="nav-item text-center mx-2">
-                        <a class="nav-link" href="message.html"><i class="bi bi-envelope"></i><br>Messagerie</a>
+                        <a class="nav-link" href="message.php"><i class="bi bi-envelope"></i><br>Messagerie</a>
                     </li>
                     <li class="nav-item text-center mx-2">
-                        <a class="nav-link" href="notification.html"><i class="bi bi-bell"></i><br>Notification</a>
+                        <a class="nav-link" href="notification.php"><i class="bi bi-bell"></i><br>Notification</a>
                     </li>
                     <li class="nav-item text-center mx-2">
-                        <a class="nav-link active" href="profil.html"><i class="bi bi-person-circle"></i><br>Profil</a>
+                        <a class="nav-link active" href="profil.php"><i class="bi bi-person-circle"></i><br>Profil</a>
                     </li>
                 </ul>
             </div>

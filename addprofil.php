@@ -1,49 +1,3 @@
-<?php
-// Connexion à la base de données
-$host = 'localhost';
-$dbname = 'hackathon';
-$username = 'root';
-$password = '';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
-
-// Traitement du formulaire lorsqu'il est soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
-    $nom = $_POST['nom'] ?? '';
-    $poste = $_POST['poste'] ?? '';
-    $entreprise = $_POST['entreprise'] ?? '';
-    $description = $_POST['description'] ?? '';
-    $experience = $_POST['experience'] ?? '';
-    
-    try {
-        // Préparation de la requête d'insertion
-        $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) 
-                              VALUES (:nom_candidat, :intituler_poste, :ecole, :description, :experience)");
-        
-        // Exécution de la requête avec les paramètres
-        $stmt->execute([
-            ':nom_candidat' => $nom,
-            ':intituler_poste' => $poste,
-            ':ecole' => $entreprise,
-            ':description' => $description,
-            ':experience' => $experience
-        ]);
-        
-        // Redirection vers la page profil après l'insertion
-        header('Location: profil.php');
-        exit();
-    } catch (PDOException $e) {
-        die("Erreur lors de l'insertion : " . $e->getMessage());
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -145,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <div class="container">
     <h2>Modifier le profil</h2>
-    <form action="" method="POST" id="profilForm">
+    <form action="profil.php" method="POST" id="profilForm">
       <div class="form-group">
         <label for="nom">Nom et Prénom</label>
         <input type="text" id="nom" name="nom" required>
@@ -171,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea id="experience" name="experience" required></textarea>
       </div>
 
-      <button type="submit">Enregistrer</button>
+      <button type="submit" name="add">Enregistrer</button>
     </form>
   </div>
 
