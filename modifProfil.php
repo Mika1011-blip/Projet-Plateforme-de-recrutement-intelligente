@@ -4,6 +4,7 @@ $host = 'localhost';
 $dbname = 'hackathon';
 $username = 'root';
 $password = '';
+$profil = [];
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -12,35 +13,53 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-// Traitement du formulaire lorsqu'il est soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
-    $nom = $_POST['nom'] ?? '';
-    $poste = $_POST['poste'] ?? '';
-    $entreprise = $_POST['entreprise'] ?? '';
-    $description = $_POST['description'] ?? '';
-    $experience = $_POST['experience'] ?? '';
-    
-    try {
-        // Préparation de la requête d'insertion
-        $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) 
-                              VALUES (:nom_candidat, :intituler_poste, :ecole, :description, :experience)");
-        
-        // Exécution de la requête avec les paramètres
-        $stmt->execute([
-            ':nom_candidat' => $nom,
-            ':intituler_poste' => $poste,
-            ':ecole' => $entreprise,
-            ':description' => $description,
-            ':experience' => $experience
-        ]);
-        
-        // Redirection vers la page profil après l'insertion
-        header('Location: profil.php');
-        exit();
-    } catch (PDOException $e) {
-        die("Erreur lors de l'insertion : " . $e->getMessage());
-    }
+// MODIFICATION ICI : Traitement de la mise à jour
+if(isset($_POST['mod1'])) {
+  // Récupération et sécurisation des données
+  $id = $_POST['id'] ?? null; // Ajout d'un identifiant pour la mise à jour
+  $profil["id"] = $id;
+}
+
+if(isset($_POST['mod'])) {
+  // Récupération et sécurisation des données
+  $id = $_POST['id'] ?? null; // Ajout d'un identifiant pour la mise à jour
+  $nom = htmlspecialchars($_POST['nom'] ?? '');
+  $poste = htmlspecialchars($_POST['poste'] ?? '');
+  $entreprise = htmlspecialchars($_POST['entreprise'] ?? '');
+  $description = htmlspecialchars($_POST['description'] ?? '');
+  $experience = htmlspecialchars($_POST['experience'] ?? '');
+  
+  // Validation minimale
+  if(empty($id) || empty($nom)) {
+      die("L'ID et le nom sont obligatoires");
+  }
+  
+  try {
+      // REQUÊTE MODIFIÉE ICI : UPDATE au lieu de INSERT
+      $stmt = $pdo->prepare("UPDATE profil SET 
+                            nom_candidat = :nom_candidat, 
+                            intituler_poste = :intituler_poste, 
+                            ecole = :ecole, 
+                            description = :description, 
+                            experience = :experience
+                            WHERE id = :id");
+      
+      // Exécution avec les paramètres
+      $stmt->execute([
+          ':id' => $id,
+          ':nom_candidat' => $nom,
+          ':intituler_poste' => $poste,
+          ':ecole' => $entreprise,
+          ':description' => $description,
+          ':experience' => $experience
+      ]);
+      
+      // Redirection après mise à jour
+      header('Location: profil.php?success=1');
+      exit();
+  } catch (PDOException $e) {
+      die("Erreur lors de la mise à jour : " . $e->getMessage());
+  }
 }
 ?>
 
@@ -147,6 +166,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Modifier le profil</h2>
     <form action="" method="POST" id="profilForm">
       <div class="form-group">
+        <label for="id">id</label>
+        <input type="text" id="id" name="id" value="<?php echo htmlspecialchars($profil['id']); ?>" required>
+      </div>
+
+      <div class="form-group">
         <label for="nom">Nom et Prénom</label>
         <input type="text" id="nom" name="nom" required>
       </div>
@@ -171,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea id="experience" name="experience" required></textarea>
       </div>
 
-      <button type="submit">Enregistrer</button>
+      <button type="submit" name="mod">Enregistrer</button>
     </form>
   </div>
 

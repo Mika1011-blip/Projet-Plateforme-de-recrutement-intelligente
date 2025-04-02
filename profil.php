@@ -150,15 +150,21 @@ $profil = [];
           <small>Entreprise ou école actuelle</small>
         </div>
       </div>
+      
       <div>
+      
+
+      <form action="modifProfil.php" method="post">
       <?php if ($profil){ ?>
+        <input type="text" name="id" value="<?php echo htmlspecialchars($profil['id_candidat']); ?>">
         <a href="modifProfil.php" class="btn btn-secondary">Modifier le profil <i class="bi bi-pencil"></i></a>
+        <input type="submit" name="mod1">
       <?php } ?>
+      </form>
+
       </div>
     </div>
-    <form action="modifProfil.php" method="post">
-      
-    </form>
+    
 
     <div class="container">
     <h2>Mon Profil</h2>
