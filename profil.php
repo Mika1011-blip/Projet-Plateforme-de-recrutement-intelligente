@@ -7,52 +7,72 @@ $password = '';
 $profil = [];
 
 
-  if(isset($_POST['add'])) {
-      try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Erreur de connexion : " . $e->getMessage());
-    }
+if(isset($_POST['add'])) {
+    try {
+      $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  } catch (PDOException $e) {
+      die("Erreur de connexion : " . $e->getMessage());
+  }
 
-    // Traitement du formulaire lorsqu'il est soumis
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      // Récupération des données du formulaire
-      $nom = $_POST['nom'] ?? '';
-      $poste = $_POST['poste'] ?? '';
-      $entreprise = $_POST['entreprise'] ?? '';
-      $description = $_POST['description'] ?? '';
-      $experience = $_POST['experience'] ?? '';
-      
-        try {
-                // Préparation de la requête d'insertion
-                $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) 
-                                VALUES (:nom_candidat, :intituler_poste, :ecole, :description, :experience)");
-                
-                // Exécution de la requête avec les paramètres
-                $stmt->execute([
-                ':nom_candidat' => $nom,
-                ':intituler_poste' => $poste,
-                ':ecole' => $entreprise,
-                ':description' => $description,
-                ':experience' => $experience
-                ]);
-                
-        } catch (PDOException $e) {
-                die("Erreur lors de l'insertion : " . $e->getMessage());
-        }
-      }
+  // Traitement du formulaire lorsqu'il est soumis
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupération des données du formulaire
+    $nom = $_POST['nom'] ?? '';
+    $poste = $_POST['poste'] ?? '';
+    $entreprise = $_POST['entreprise'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $experience = $_POST['experience'] ?? '';
     
-    // Récupération des données du profil 
+      try {
+              // Préparation de la requête d'insertion
+              $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) 
+                              VALUES (:nom_candidat, :intituler_poste, :ecole, :description, :experience)");
+              
+              // Exécution de la requête avec les paramètres
+              $stmt->execute([
+              ':nom_candidat' => $nom,
+              ':intituler_poste' => $poste,
+              ':ecole' => $entreprise,
+              ':description' => $description,
+              ':experience' => $experience
+              ]);
+              
+      } catch (PDOException $e) {
+              die("Erreur lors de l'insertion : " . $e->getMessage());
+      }
+    }
+  
+  // Récupération des données du profil 
+  try {
+      $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
+      $profil = $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (PDOException $e) {
+      die("Erreur lors de la récupération du profil : " . $e->getMessage());
+  }
+}
+
+// En haut de profil.php (avant tout HTML)
+if(isset($_GET['success']) && $_GET['success'] == '1') {
+  // Exécuter votre action spécifique
+  echo '<div class="alert alert-success">Profil mis à jour avec succès !</div>';
+
+  try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+
+  // Récupération des données du profil 
     try {
         $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
         $profil = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         die("Erreur lors de la récupération du profil : " . $e->getMessage());
     }
-  }
 
-
+}
 ?>
 
 

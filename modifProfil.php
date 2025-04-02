@@ -25,7 +25,7 @@ if(isset($_POST['mod'])) {
   $id = $_POST['id'] ?? null; // Ajout d'un identifiant pour la mise à jour
   $nom = htmlspecialchars($_POST['nom'] ?? '');
   $poste = htmlspecialchars($_POST['poste'] ?? '');
-  $entreprise = htmlspecialchars($_POST['entreprise'] ?? '');
+  $ecole = htmlspecialchars($_POST['ecole'] ?? '');
   $description = htmlspecialchars($_POST['description'] ?? '');
   $experience = htmlspecialchars($_POST['experience'] ?? '');
   
@@ -42,14 +42,14 @@ if(isset($_POST['mod'])) {
                             ecole = :ecole, 
                             description = :description, 
                             experience = :experience
-                            WHERE id = :id");
+                            WHERE id_candidat = :id_candidat");
       
       // Exécution avec les paramètres
       $stmt->execute([
-          ':id' => $id,
+          ':id_candidat' => $id,
           ':nom_candidat' => $nom,
           ':intituler_poste' => $poste,
-          ':ecole' => $entreprise,
+          ':ecole' => $ecole,
           ':description' => $description,
           ':experience' => $experience
       ]);
@@ -61,6 +61,8 @@ if(isset($_POST['mod'])) {
       die("Erreur lors de la mise à jour : " . $e->getMessage());
   }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -181,8 +183,8 @@ if(isset($_POST['mod'])) {
       </div>
 
       <div class="form-group">
-        <label for="entreprise">Entreprise / École actuelle</label>
-        <input type="text" id="entreprise" name="entreprise" required>
+        <label for="ecole">Entreprise / École actuelle</label>
+        <input type="text" id="ecole" name="ecole" required>
       </div>
 
       <div class="form-group">
