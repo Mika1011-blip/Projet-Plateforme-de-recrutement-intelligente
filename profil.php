@@ -75,6 +75,15 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
 }
 ?>
 
+<?php
+session_start();
+
+if (isset($_SESSION["nom"])) {
+    echo "Bonjour " . $_SESSION["nom"];
+} else {
+    echo "Aucune session active.";
+}
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -141,19 +150,19 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link" href="index.html"><i class="bi bi-house"></i><br>Accueil</a>
+                    <a class="nav-link" href="index.php"><i class="bi bi-house"></i><br>Accueil</a>
                 </li>
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link" href="emploie.html"><i class="bi bi-people"></i><br>Emplois</a>
+                    <a class="nav-link" href="emploie.php"><i class="bi bi-people"></i><br>Emplois</a>
                 </li>
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link" href="message.html"><i class="bi bi-envelope"></i><br>Messagerie</a>
+                    <a class="nav-link" href="message.php"><i class="bi bi-envelope"></i><br>Messagerie</a>
                 </li>
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link" href="notification.html"><i class="bi bi-bell"></i><br>Notification</a>
+                    <a class="nav-link" href="notification.php"><i class="bi bi-bell"></i><br>Notification</a>
                 </li>
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link active" href="profil.html"><i class="bi bi-person-circle"></i><br>Profil</a>
+                    <a class="nav-link active" href="profil.php"><i class="bi bi-person-circle"></i><br>Profil</a>
                 </li>
             </ul>
         </div>
@@ -165,9 +174,9 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
       <div class="profile-info">
         <img src="https://img.icons8.com/ios-filled/100/user-male-circle.png" alt="Avatar">
         <div class="profile-text">
-          <h5>Nom Prénom</h5>
-          <small>Intitulé du poste</small>
-          <small>Entreprise ou école actuelle</small>
+          <h5><?php echo htmlspecialchars($profil['nom_candidat'] ?? 'Non renseigné'); ?></h5>
+          <small><?php echo htmlspecialchars($profil['intituler_poste'] ?? 'Non renseigné'); ?></small>
+          <small><?php echo htmlspecialchars($profil['ecole'] ?? 'Non renseigné'); ?></small>
         </div>
       </div>
       
@@ -176,9 +185,11 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
 
       <form action="modifProfil.php" method="post">
       <?php if ($profil){ ?>
-        <input type="text" name="id" value="<?php echo htmlspecialchars($profil['id_candidat']); ?>">
-        <a href="modifProfil.php" class="btn btn-secondary">Modifier le profil <i class="bi bi-pencil"></i></a>
-        <input type="submit" name="mod1">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($profil['id_candidat']); ?>">
+        <p class="btn btn-secondary"> <i class="bi bi-pencil" ></i>
+          <input type="submit" class="btn btn-secondary"  name="mod1" value="Modifier le profil">
+        </p>
+        
       <?php } ?>
       </form>
 
@@ -187,7 +198,7 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
     
 
     <div class="container">
-    <h2>Mon Profil</h2>
+    <!-- <h2>Mon Profil</h2> -->
     
     <?php if ($profil): ?>
       <div class="profil-info">
@@ -224,7 +235,8 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
   </div>
 
     <div class="logout">
-      <i class="bi bi-gear"></i> <a href="deco.html">Déconnexion</a>
+    <a href="test_laissad/decoData.html" class="btn btn-primary">Se connecter</a>
+      <a href="deco.php" class="btn btn-secondary">Déconnexion</a>
     </div>
   </div>
 

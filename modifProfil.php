@@ -65,6 +65,16 @@ if(isset($_POST['mod'])) {
 
 ?>
 
+<?php
+session_start();
+
+if (isset($_SESSION["nom"])) {
+    echo "Bonjour " . $_SESSION["nom"];
+} else {
+    echo "Aucune session active.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -161,15 +171,15 @@ if(isset($_POST['mod'])) {
 
   <header>
     <div class="logo">JobSyn</div>
-    <div class="back-link"><a href="profil.php">← Retour au profil</a></div>
+    <div class="back-link"><a href="index.php">← Retour au profil</a></div>
   </header>
 
   <div class="container">
     <h2>Modifier le profil</h2>
     <form action="" method="POST" id="profilForm">
       <div class="form-group">
-        <label for="id">id</label>
-        <input type="text" id="id" name="id" value="<?php echo htmlspecialchars($profil['id']); ?>" required>
+        <!-- <label for="id">id</label> -->
+        <input type="hidden" id="id" name="id" value="<?php echo htmlspecialchars($profil['id']); ?>" required>
       </div>
 
       <div class="form-group">

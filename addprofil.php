@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (isset($_SESSION["nom"])) {
+    echo "Bonjour " . $_SESSION["nom"];
+} else {
+    echo "Aucune session active.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
