@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="styleData.css">
+    <title>JobSyn</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="form-box">
+            <!-- Login -->
+            <div class="login-container" id="login">
+                <header class="main-header">
+                    <h2>JobSyn</h2>
+                </header>
+                <div class="top">
+                    <span>Vous n'avez pas de compte? <a href="#" onclick="register()">S'inscrire</a></span>
+                    <header>Se connecter</header>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Email" id="login-email">
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" class="input-field" placeholder="Mot de passe" id="login-password">
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="input-box">
+                    <input type="button" class="submit" value="Se connecter" onclick="login()">
+                </div>
+                <div class="two-col">
+                    <div class="one">
+                        <input type="checkbox" id="login-check">
+                        <label for="login-check"> Se souvenir de moi</label>
+                    </div>
+                    <div class="two">
+                        <label><a href="#" onclick="resetPassword()">Mot de passe oublié?</a></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register -->
+            <div class="register-container" id="register">
+                <div class="two-forms">
+                    <div class="input-box">
+                        <input type="text" class="input-field" placeholder="Nom" id="register-nom">
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" class="input-field" placeholder="Prénom" id="register-prenom">
+                        <i class="bx bx-user"></i>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="N° téléphone" id="register-phone">
+                    <i class='bx bx-phone'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Email" id="register-email">
+                    <i class="bx bx-envelope"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" class="input-field" placeholder="Mot de passe" id="register-password">
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <br>
+                <div class="input-box">
+                    <input type="button" class="submit" value="S'inscrire" onclick="signup()">
+                </div>
+                <div class="top">
+                    <span>Vous avez déjà un compte? <a href="#" onclick="logine()" >Se connecter</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" defer>
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut,
+            sendEmailVerification,
+            sendPasswordResetEmail
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhMqxQRp8_XNzQRT0znLeMTwaB1SHdXOg",
+            authDomain: "projet-9a715.firebaseapp.com",
+            projectId: "projet-9a715",
+            storageBucket: "projet-9a715.appspot.com",
+            messagingSenderId: "567937777797",
+            appId: "1:567937777797:web:8f4b47b1a4549bbd3869ec",
+            measurementId: "G-YKSJS12X9Q"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.signup = async () => {
+            console.log("signup lancé");
+            const email = document.getElementById("register-email").value;
+            const password = document.getElementById("register-password").value;
+            const nom = document.getElementById("register-nom").value;
+            const prenom = document.getElementById("register-prenom").value;
+            const phone = document.getElementById("register-phone").value;
+
+            if (!email || !password || !nom || !prenom || !phone) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                try {
+                    await sendEmailVerification(user);
+                    console.log("Email de vérification envoyé à : ", user.email);
+                } catch (e) {
+                    console.error("Erreur lors de l'envoi du mail de vérification :", e.message);
+                }
+
+                await setDoc(doc(db, "utilisateurs", user.uid), {
+                    email,
+                    nom,
+                    prenom,
+                    phone,
+                    role: "candidat",
+                    dateInscription: new Date().toISOString()
+                });
+
+                await fetch("http://localhost/test_laissad/inscription.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        uid: user.uid,
+                        email,
+                        nom,
+                        prenom,
+                        phone,
+                        role: "candidat",
+                        dateInscription: new Date().toISOString()
+                    })
+                });
+
+                alert("Inscription réussie ! Un e-mail de vérification vous a été envoyé.");
+            } catch (error) {
+                alert("Erreur : " + error.message);
+            }
+        };
+        
+        ////////////////////////////////////////////////
+        
+        window.login = async () => {
+            
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            if (!email || !password) {
+                alert("Veuillez entrer votre email et mot de passe.");
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                if (!user.emailVerified) {
+                    alert("Veuillez vérifier votre adresse e-mail.");
+                    await signOut(auth);
+                    return;
+                }
+
+                const docRef = doc(db, "utilisateurs", user.uid);
+                const docSnap = await getDoc(docRef);
+
+                await fetch("http://localhost/test_laissad/session.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: user.email,
+                        nom: docSnap.data().nom,
+                        uid: user.uid
+                    })
+                });
+
+                if (docSnap.exists()) {
+                    const role = docSnap.data().role;
+                    
+                    setTimeout(() => {
+                        window.location.href = role === "recruteur" ? "recruteur.php" : "candidat.php";
+                    }, 1500);
+                } else {
+                    alert("Profil utilisateur introuvable.");
+                }
+
+            } catch (error) {
+                alert("Erreur : mot de passe incorrect " );
+            }
+        };
+          
+        ///////////////////////////////
+        // Ouvre la modale
+window.resetPassword = () => {
+  document.getElementById("resetModal").style.display = "flex";
+};
+
+// Ferme la modale
+window.closeResetPopup = () => {
+  document.getElementById("resetModal").style.display = "none";
+};
+
+// Envoie du lien de reset
+window.sendResetLink = async () => {
+  const email = document.getElementById("reset-email").value;
+  if (!email) {
+    alert("Veuillez entrer une adresse e-mail.");
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Email de réinitialisation envoyé.");
+    closeResetPopup();
+  } catch (error) {
+    alert("Erreur : " + error.message);
+  }
+};
+
+// Fermer la modale si on clique à l'extérieur
+window.addEventListener("click", function (e) {
+  const modal = document.getElementById("resetModal");
+  if (e.target === modal) closeResetPopup();
+});
+// 
+       
+    </script>
+
+    <script>
+        function logine() {
+            document.getElementById("login").style.left = "4px";
+            document.getElementById("register").style.right = "-520px";
+        }
+
+        function register() {
+            document.getElementById("login").style.left = "-510px";
+            document.getElementById("register").style.right = "5px";
+        }
+    </script>
+    <!-- MODALE de réinitialisation du mot de passe -->
+    <div id="resetModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeResetPopup()">&times;</span>
+          <h3>Réinitialisation du mot de passe</h3>
+          
+          <!-- Input stylé -->
+          <div class="input-box">
+            <input type="email" id="reset-email" class="input-field" placeholder="Entrez votre email" />
+            <i class="bx bx-envelope"></i>
+          </div>
+      
+          <br>
+          <button class="submit" onclick="sendResetLink()">Envoyer</button>
+          <button class="submit" onclick="closeResetPopup()">Annuler</button>
+        </div>
+      </div>
+      
+  
+</body>
+</html> 
