@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Candidat - Postuler</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     #debug_console {
       white-space: pre-wrap;
@@ -82,17 +84,48 @@
           document.getElementById('debug_console').textContent = JSON.stringify(result, null, 2);
         }
       } catch (error) {
-  alert("Erreur lors de l'envoi.");
-  document.getElementById('debug_console').textContent = error;
-}
-
+      alert("Erreur lors de l'envoi.");
+      document.getElementById('debug_console').textContent = error;
     }
+
+        }
 
     window.onload = listJobs;
   </script>
-  
+
 </head>
+
 <body class="bg-light">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-light shadow-sm">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="#">JobSyn</a>
+
+      <div class="collapse navbar-collapse justify-content-end">
+          <ul class="navbar-nav">
+              <li class="nav-item text-center mx-2">
+                  <a class="nav-link" href="../../index.php"><i class="bi bi-house"></i><br>Accueil</a>
+              </li>
+              <li class="nav-item text-center mx-2">
+                  <a class="nav-link" href="../../about.php"><i class="bi bi-people"></i><br>A propos</a>
+              </li>
+              <li class="nav-item text-center mx-2">
+                  <a class="nav-link" href="../../message.php"><i class="bi bi-envelope"></i><br>Messagerie</a>
+              </li>
+              <li class="nav-item text-center mx-2">
+                  <a class="nav-link" href="../../notification.php"><i class="bi bi-bell"></i><br>Notification</a>
+              </li>
+              <li class="nav-item text-center mx-2">
+                  <a class="nav-link active" href="../../profil.php"><i class="bi bi-person-circle"></i><br>Profil</a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>
+
+
+
+
   <div class="container py-5">
     <h2 class="mb-4 text-center">🎯 Offres d'emploi disponibles</h2>
     <div id="job_list"></div>
@@ -112,11 +145,55 @@
       </form>
     </div>
 
-    <div class="mt-4">
-      <label>🐞 Console de debug</label>
+    <!-- <div class="mt-4">
+      <label> Console de debug</label>
       <input type="text" id="debug_console" class="form-control bg-white" readonly>
-    </div>
+    </div> -->
     
+  </div>
+
+
+  <div class="container py-4">
+    <footer class="pt-4 mt-4 border-top">
+      <div class="row">
+        <!-- Logo & Description -->
+        <div class="col-md-4 mb-3">
+          <h5 class="fw-bold text-primary">JobSyn</h5>
+          <p class="text-muted">
+            JobSyn est une plateforme de recrutement en ligne qui connecte les talents aux meilleures opportunités d’emploi. Simple, rapide et efficace.
+          </p>
+        </div>
+  
+        <!-- Liens utiles -->
+        <div class="col-md-4 mb-3">
+          <h6 class="fw-semibold">Liens utiles</h6>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-decoration-none text-muted">Accueil</a></li>
+            <li><a href="#" class="text-decoration-none text-muted">Offres d'emploi</a></li>
+            <li><a href="#" class="text-decoration-none text-muted">Candidats</a></li>
+            <li><a href="#" class="text-decoration-none text-muted">Contact</a></li>
+          </ul>
+        </div>
+  
+        <!-- Contact -->
+        <div class="col-md-4 mb-3">
+          <h6 class="fw-semibold">Nous contacter</h6>
+          <p class="text-muted mb-1"> Paris, France</p>
+          <p class="text-muted mb-1"> +33 77 123 45 67</p>
+          <p class="text-muted">📧 contact@jobsyn.com</p>
+        </div>
+      </div>
+  
+      <!-- Bas de page -->
+      <div class="d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+        <p class="mb-0 text-muted">&copy; 2025 JobSyn. Tous droits réservés.</p>
+        <div>
+          <a href="#" class="text-muted me-3"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-muted me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </footer>
   </div>
 </body>
 </html>

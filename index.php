@@ -16,6 +16,7 @@ if (isset($_SESSION["nom"])) {
   <title>JobSyn - Interface IA</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .chat-container {
       height: 400px;
@@ -86,7 +87,7 @@ if (isset($_SESSION["nom"])) {
               <div class="col-md-6">
                 <h2 class="fw-bold text-primary mb-3">Bienvenue sur RecruteX</h2>
                 <p class="lead">
-                  RecruteX est une plateforme intelligente conçue pour faciliter la mise en relation entre les entreprises et les talents. Que vous soyez une startup en pleine croissance ou un candidat à la recherche d'une opportunité professionnelle, notre solution s’adapte à vos besoins.
+                  JobSyn est une plateforme intelligente conçue pour faciliter la mise en relation entre les entreprises et les talents. Que vous soyez une startup en pleine croissance ou un candidat à la recherche d'une opportunité professionnelle, notre solution s’adapte à vos besoins.
                 </p>
                 <ul class="list-group list-group-flush mb-3">
                   <li class="list-group-item"> Recherche simplifiée d'offres et de profils</li>
@@ -94,7 +95,7 @@ if (isset($_SESSION["nom"])) {
                   <li class="list-group-item"> Statistiques et suivi des candidatures en temps réel</li>
                   <li class="list-group-item"> Sécurité et confidentialité des données</li>
                 </ul>
-                <a href="#about" class="btn btn-primary mt-3">En savoir plus</a>
+                <a href="about.php" class="btn btn-primary mt-3">En savoir plus</a>
                 <a href="./ProjetHackaton/frontend/candidate.html" class="btn btn-primary mt-3">Accéder aux offres</a>
               </div>
 
@@ -109,6 +110,50 @@ if (isset($_SESSION["nom"])) {
       </div>
     </div>
   </div>
+
+
+  <div class="container py-4">
+  <footer class="pt-4 mt-4 border-top">
+    <div class="row">
+      <!-- Logo & Description -->
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold text-primary">JobSyn</h5>
+        <p class="text-muted">
+          JobSyn est une plateforme de recrutement en ligne qui connecte les talents aux meilleures opportunités d’emploi. Simple, rapide et efficace.
+        </p>
+      </div>
+
+      <!-- Liens utiles -->
+      <div class="col-md-4 mb-3">
+        <h6 class="fw-semibold">Liens utiles</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none text-muted">Accueil</a></li>
+          <li><a href="#" class="text-decoration-none text-muted">Offres d'emploi</a></li>
+          <li><a href="#" class="text-decoration-none text-muted">Candidats</a></li>
+          <li><a href="#" class="text-decoration-none text-muted">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-4 mb-3">
+        <h6 class="fw-semibold">Nous contacter</h6>
+        <p class="text-muted mb-1"> Paris, France</p>
+        <p class="text-muted mb-1"> +33 77 123 45 67</p>
+        <p class="text-muted">📧 contact@jobsyn.com</p>
+      </div>
+    </div>
+
+    <!-- Bas de page -->
+    <div class="d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+      <p class="mb-0 text-muted">&copy; 2025 JobSyn. Tous droits réservés.</p>
+      <div>
+        <a href="#" class="text-muted me-3"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="text-muted me-3"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
