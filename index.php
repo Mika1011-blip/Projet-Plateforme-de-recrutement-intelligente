@@ -26,7 +26,7 @@ if (isset($_SESSION["nom"])) {
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-secondary-subtle p-2">
+  <nav class="navbar navbar-expand-lg bg-light-subtle p-2">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="#">JobSyn</a>
       <form class="d-flex mx-auto" role="search">
@@ -41,7 +41,7 @@ if (isset($_SESSION["nom"])) {
          <a class="nav-link" href="index.php"> <i class="bi bi-house fs-5"></i><br><small>Accueil</small></a>
         </li>
         <li class="nav-item text-center">
-            <a class="nav-link" href="emploie.php"> <i class="bi bi-person fs-5"></i><br><small>Emplois</small> </a>
+            <a class="nav-link" href="about.php"> <i class="bi bi-people" fs-5"></i><br><small>A propos</small> </a>
         </li>
         <li class="nav-item text-center">
             <a class="nav-link" href="message.php"><i class="bi bi-envelope fs-5"></i><br><small>Messages</small></a>
@@ -75,9 +75,37 @@ if (isset($_SESSION["nom"])) {
 
       <!-- Offres d'emplois -->
       <div class="col-md-8">
-        <div class="bg-secondary-subtle rounded-4 p-3" style="height: 400px;">
-          <h6 class="fw-bold">OFFRES D'EMPLOIS</h6>
-        </div>
+
+
+          <div class="container py-4 bg-secondary-subtle rounded-4 p-3">
+            <div class="row align-items-center">
+              <div class="col-md-3 mb-4">
+                
+              </div>
+
+              <div class="col-md-6">
+                <h2 class="fw-bold text-primary mb-3">Bienvenue sur RecruteX</h2>
+                <p class="lead">
+                  RecruteX est une plateforme intelligente conçue pour faciliter la mise en relation entre les entreprises et les talents. Que vous soyez une startup en pleine croissance ou un candidat à la recherche d'une opportunité professionnelle, notre solution s’adapte à vos besoins.
+                </p>
+                <ul class="list-group list-group-flush mb-3">
+                  <li class="list-group-item"> Recherche simplifiée d'offres et de profils</li>
+                  <li class="list-group-item"> Système de matching intelligent</li>
+                  <li class="list-group-item"> Statistiques et suivi des candidatures en temps réel</li>
+                  <li class="list-group-item"> Sécurité et confidentialité des données</li>
+                </ul>
+                <a href="#about" class="btn btn-primary mt-3">En savoir plus</a>
+                <a href="./ProjetHackaton/frontend/candidate.html" class="btn btn-primary mt-3">Accéder aux offres</a>
+              </div>
+
+              <div class="col-md-3 mb-4">
+                
+              </div>
+
+            </div>
+          </div>
+
+
       </div>
     </div>
   </div>

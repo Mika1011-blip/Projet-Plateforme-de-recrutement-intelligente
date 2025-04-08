@@ -116,7 +116,7 @@ if (isset($_SESSION["nom"])) {
                     <a class="nav-link" href="index.php"><i class="bi bi-house"></i><br>Accueil</a>
                 </li>
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link" href="emploie.php"><i class="bi bi-people"></i><br>Emplois</a>
+                <a class="nav-link" href="about.php"><i class="bi bi-people"></i><br>A propos</a>
                 </li>
                 <li class="nav-item text-center mx-2">
                     <a class="nav-link" href="message.php"><i class="bi bi-envelope"></i><br>Messagerie</a>
