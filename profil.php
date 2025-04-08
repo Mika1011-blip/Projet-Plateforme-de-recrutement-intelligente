@@ -6,14 +6,15 @@ $username = 'root';
 $password = '';
 $profil = [];
 
+try {
+  $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+  die("Erreur de connexion : " . $e->getMessage());
+}
 
 if(isset($_POST['add'])) {
-    try {
-      $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  } catch (PDOException $e) {
-      die("Erreur de connexion : " . $e->getMessage());
-  }
+    
 
   // Traitement du formulaire lorsqu'il est soumis
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -43,14 +44,20 @@ if(isset($_POST['add'])) {
       }
     }
   
-  // Récupération des données du profil 
-  try {
-      $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
-      $profil = $stmt->fetch(PDO::FETCH_ASSOC);
-  } catch (PDOException $e) {
-      die("Erreur lors de la récupération du profil : " . $e->getMessage());
   }
-}
+
+  // si la session est définie, recupérer les informations
+  if (isset($_SESSION["nom"])) {
+      // Récupération des données du profil 
+      try {
+        $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
+        $profil = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die("Erreur lors de la récupération du profil : " . $e->getMessage());
+    }
+  } 
+
+  
 
 // En haut de profil.php (avant tout HTML)
 if(isset($_GET['success']) && $_GET['success'] == '1') {
@@ -73,16 +80,7 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
     }
 
 }
-?>
-
-<?php
 session_start();
-
-if (isset($_SESSION["nom"])) {
-    echo "Bonjour " . $_SESSION["nom"];
-} else {
-    echo "Aucune session active.";
-}
 ?>
 
 <!DOCTYPE html>
@@ -159,7 +157,8 @@ if (isset($_SESSION["nom"])) {
                     <a class="nav-link" href="message.php"><i class="bi bi-envelope"></i><br>Messagerie</a>
                 </li>
                 <li class="nav-item text-center mx-2">
-                    <a class="nav-link" href="notification.php"><i class="bi bi-bell"></i><br>Notification</a>
+                    <!-- <a class="nav-link" href="notification.php"><i class="bi bi-bell"></i><br>Notification</a> -->
+                    <a class="nav-link" href="./ProjetHackaton/frontend/candidate.php"><i class="bi bi-bell"></i><br>Nos offres</a>
                 </li>
                 <li class="nav-item text-center mx-2">
                     <a class="nav-link active" href="profil.php"><i class="bi bi-person-circle"></i><br>Profil</a>
@@ -235,8 +234,16 @@ if (isset($_SESSION["nom"])) {
   </div>
 
     <div class="logout">
-    <a href="test_laissad/decoData.html" class="btn btn-primary">Se connecter</a>
-      <a href="deco.php" class="btn btn-secondary">Déconnexion</a>
+      <?php
+          if (isset($_SESSION["nom"])) {
+              echo "<a href='deco.php' class='btn btn-secondary'>Déconnexion</a>";
+          } else {
+              echo "<a class='btn btn-primary' href='./test_laissad/decoData.html'>se connecter</a>";
+          }
+      ?>
+
+    
+      
     </div>
   </div>
 

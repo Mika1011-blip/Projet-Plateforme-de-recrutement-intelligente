@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-if (isset($_SESSION["nom"])) {
-    echo "Bonjour " . $_SESSION["nom"];
-} else {
-    echo "Aucune session active.";
-}
 ?>
 
 <!DOCTYPE html>
@@ -42,16 +37,26 @@ if (isset($_SESSION["nom"])) {
          <a class="nav-link" href="index.php"> <i class="bi bi-house fs-5"></i><br><small>Accueil</small></a>
         </li>
         <li class="nav-item text-center">
-            <a class="nav-link" href="about.php"> <i class="bi bi-people" fs-5"></i><br><small>A propos</small> </a>
+            <a class="nav-link" href="about.php"> <i class="bi bi-people fs-5"></i><br><small>A propos</small> </a>
         </li>
         <li class="nav-item text-center">
             <a class="nav-link" href="message.php"><i class="bi bi-envelope fs-5"></i><br><small>Messages</small></a>
         </li>
         <li class="nav-item text-center">
-          <a class="nav-link" href="notification.php"> <i class="bi bi-bell fs-5"></i><br><small>Notifications</small></a>
+          <!-- <a class="nav-link" href="notification.php"> <i class="bi bi-bell fs-5"></i><br><small>Notifications</small></a> -->
+          <a class="nav-link" href="./ProjetHackaton/frontend/candidate.php"> <i class="bi bi-bell fs-5"></i><br><small>Nos offres</small></a>
         </li>
         <li class="nav-item text-center">
             <a class="nav-link" href="profil.php"><i class="bi bi-person-circle fs-5"></i><br><small>Profil</small></a>
+        </li>
+        <li>
+          <?php
+            if (isset($_SESSION["nom"])) {
+                echo "Bonjour " . $_SESSION["nom"];
+            } else {
+                echo "<a class='btn btn-primary' href='./test_laissad/decoData.html'>se connecter</a>";
+            }
+          ?>
         </li>
       </ul>
     </div>
@@ -96,7 +101,7 @@ if (isset($_SESSION["nom"])) {
                   <li class="list-group-item"> Sécurité et confidentialité des données</li>
                 </ul>
                 <a href="about.php" class="btn btn-primary mt-3">En savoir plus</a>
-                <a href="./ProjetHackaton/frontend/candidate.html" class="btn btn-primary mt-3">Accéder aux offres</a>
+                <a href="./ProjetHackaton/frontend/candidate.php" class="btn btn-primary mt-3">Accéder aux offres</a>
               </div>
 
               <div class="col-md-3 mb-4">

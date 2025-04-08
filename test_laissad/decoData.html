@@ -200,7 +200,7 @@
                     const role = docSnap.data().role;
                     
                     setTimeout(() => {
-                        window.location.href = role === "recruteur" ? "recruteur.php" : "candidat.php";
+                        window.location.href = role === "recruteur" ? "../ProjetHackaton/frontend/recruiter.php" : "../index.php";
                     }, 1500);
                 } else {
                     alert("Profil utilisateur introuvable.");

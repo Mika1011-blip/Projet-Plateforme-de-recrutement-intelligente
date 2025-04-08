@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -113,11 +114,21 @@
                   <a class="nav-link" href="../../message.php"><i class="bi bi-envelope"></i><br>Messagerie</a>
               </li>
               <li class="nav-item text-center mx-2">
-                  <a class="nav-link" href="../../notification.php"><i class="bi bi-bell"></i><br>Notification</a>
+                  <!-- <a class="nav-link" href="../../notification.php"><i class="bi bi-bell"></i><br>Notification</a> -->
+                  <a class="nav-link" href="./candidate.php"><i class="bi bi-bell"></i><br>Nos offres</a>
               </li>
               <li class="nav-item text-center mx-2">
                   <a class="nav-link active" href="../../profil.php"><i class="bi bi-person-circle"></i><br>Profil</a>
               </li>
+              <li>
+                <?php
+                    if (isset($_SESSION["nom"])) {
+                        echo "Bonjour " . $_SESSION["nom"];
+                    } else {
+                        echo "<a class='btn btn-primary' href='../../test_laissad/decoData.html'>se connecter</a>";
+                    }
+                ?>
+            </li>
           </ul>
       </div>
   </div>
