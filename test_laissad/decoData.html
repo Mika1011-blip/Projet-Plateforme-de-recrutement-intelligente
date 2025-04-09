@@ -141,7 +141,7 @@
                     dateInscription: new Date().toISOString()
                 });
 
-                await fetch("http://localhost/test_laissad/inscription.php", {
+                await fetch("http://localhost/projet_hackathon/test_laissad/inscription.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -186,7 +186,7 @@
                 const docRef = doc(db, "utilisateurs", user.uid);
                 const docSnap = await getDoc(docRef);
 
-                await fetch("http://localhost/test_laissad/session.php", {
+                await fetch("http://localhost/projet_hackathon/test_laissad/session.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -200,7 +200,7 @@
                     const role = docSnap.data().role;
                     
                     setTimeout(() => {
-                        window.location.href = role === "recruteur" ? "../ProjetHackaton/frontend/recruiter.php" : "../index.php";
+                        window.location.href = role === "recruteur" ? "recruteur.php" : "candidat.php";
                     }, 1500);
                 } else {
                     alert("Profil utilisateur introuvable.");
@@ -279,4 +279,4 @@ window.addEventListener("click", function (e) {
       
   
 </body>
-</html> 
+</html>

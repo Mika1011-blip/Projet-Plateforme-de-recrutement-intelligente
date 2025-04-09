@@ -9,7 +9,7 @@ header("Content-Type: application/json");
 $host = "localhost";
 $user = "root";
 $password = "";
-$dbname = "auth_demo";
+$dbname = "hackathon";
 
 $conn = new mysqli($host, $user, $password, $dbname);
 

@@ -108,7 +108,7 @@ if (isset($_SESSION["nom"])) {
   </header>
 
   <div class="container">
-    <h2>Modifier le profil</h2>
+    <h2>Créer le profil</h2>
     <form action="profil.php" method="POST" id="profilForm">
       <div class="form-group">
         <label for="nom">Nom et Prénom</label>

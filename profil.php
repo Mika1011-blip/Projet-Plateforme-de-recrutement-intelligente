@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Connexion à la base de données
 $host = 'localhost';
 $dbname = 'hackathon';
@@ -13,8 +15,9 @@ try {
   die("Erreur de connexion : " . $e->getMessage());
 }
 
+
 if(isset($_POST['add'])) {
-    
+  
 
   // Traitement du formulaire lorsqu'il est soumis
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,16 +49,18 @@ if(isset($_POST['add'])) {
   
   }
 
-  // si la session est définie, recupérer les informations
-  if (isset($_SESSION["nom"])) {
-      // Récupération des données du profil 
-      try {
-        $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
-        $profil = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        die("Erreur lors de la récupération du profil : " . $e->getMessage());
-    }
-  } 
+  
+    // si la session est définie, recupérer les informations
+      if (isset($_SESSION["nom"])) {
+        // Récupération des données du profil 
+        try {
+          $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
+          $profil = $stmt->fetch(PDO::FETCH_ASSOC);
+      } catch (PDOException $e) {
+          die("Erreur lors de la récupération du profil : " . $e->getMessage());
+      }
+    } 
+  
 
   
 
@@ -80,7 +85,7 @@ if(isset($_GET['success']) && $_GET['success'] == '1') {
     }
 
 }
-session_start();
+
 ?>
 
 <!DOCTYPE html>
@@ -173,7 +178,13 @@ session_start();
       <div class="profile-info">
         <img src="https://img.icons8.com/ios-filled/100/user-male-circle.png" alt="Avatar">
         <div class="profile-text">
-          <h5><?php echo htmlspecialchars($profil['nom_candidat'] ?? 'Non renseigné'); ?></h5>
+          <h5><?php 
+          if (@$_SESSION["nom"] == @$profil['nom_candidat']) {
+            echo htmlspecialchars( $profil['nom_candidat'] ?? 'Non renseigné');
+          }  
+           ?>
+          
+        </h5>
           <small><?php echo htmlspecialchars($profil['intituler_poste'] ?? 'Non renseigné'); ?></small>
           <small><?php echo htmlspecialchars($profil['ecole'] ?? 'Non renseigné'); ?></small>
         </div>

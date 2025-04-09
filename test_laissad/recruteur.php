@@ -20,6 +20,6 @@ if (isset($_SESSION["nom"])) {
     <script src='main.js'></script>
 </head>
 <body>
-    <p>bienvenue recruteur</p>
+    <p class="btn btn-primary">bienvenue recruteur</p>
 </body>
 </html>
