@@ -15,77 +15,52 @@ try {
   die("Erreur de connexion : " . $e->getMessage());
 }
 
+// Traitement du formulaire lorsqu'il est soumis
+if (isset($_POST['add'])) {
+  $nom = trim($_POST['nom'] ?? '');
+  $poste = trim($_POST['poste'] ?? '');
+  $entreprise = trim($_POST['entreprise'] ?? '');
+  $description = trim($_POST['description'] ?? '');
+  $experience = trim($_POST['experience'] ?? '');
 
-if(isset($_POST['add'])) {
-  
+  $errors = [];
 
-  // Traitement du formulaire lorsqu'il est soumis
-  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
-    $nom = $_POST['nom'] ?? '';
-    $poste = $_POST['poste'] ?? '';
-    $entreprise = $_POST['entreprise'] ?? '';
-    $description = $_POST['description'] ?? '';
-    $experience = $_POST['experience'] ?? '';
-    
-      try {
-              // Préparation de la requête d'insertion
-              $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) 
-                              VALUES (:nom_candidat, :intituler_poste, :ecole, :description, :experience)");
-              
-              // Exécution de la requête avec les paramètres
-              $stmt->execute([
-              ':nom_candidat' => $nom,
-              ':intituler_poste' => $poste,
-              ':ecole' => $entreprise,
-              ':description' => $description,
-              ':experience' => $experience
-              ]);
-              
-      } catch (PDOException $e) {
-              die("Erreur lors de l'insertion : " . $e->getMessage());
-      }
-    }
-  
-  }
+  if (empty($nom)) $errors[] = "Le nom est requis.";
+  if (empty($poste)) $errors[] = "Le poste est requis.";
+  if (empty($entreprise)) $errors[] = "L'entreprise est requise.";
+  if (empty($description)) $errors[] = "La description est requise.";
+  if (empty($experience)) $errors[] = "L'expérience est requise.";
 
-  
-    // si la session est définie, recupérer les informations
-      if (isset($_SESSION["nom"])) {
-        // Récupération des données du profil 
-        try {
-          $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
-          $profil = $stmt->fetch(PDO::FETCH_ASSOC);
-      } catch (PDOException $e) {
-          die("Erreur lors de la récupération du profil : " . $e->getMessage());
-      }
-    } 
-  
-
-  
-
-// En haut de profil.php (avant tout HTML)
-if(isset($_GET['success']) && $_GET['success'] == '1') {
-  // Exécuter votre action spécifique
-  echo '<div class="alert alert-success">Profil mis à jour avec succès !</div>';
-
-  try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
-
-  // Récupération des données du profil 
+  if (empty($errors)) {
     try {
-        $stmt = $pdo->query("SELECT * FROM profil ORDER BY id_candidat DESC LIMIT 1"); // Récupère le dernier profil ajouté
-        $profil = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        die("Erreur lors de la récupération du profil : " . $e->getMessage());
-    }
+      $stmt = $pdo->prepare("INSERT INTO profil (nom_candidat, intituler_poste, ecole, description, experience) VALUES (?, ?, ?, ?, ?)");
+      $stmt->execute([$nom, $poste, $entreprise, $description, $experience]);
 
+      $_SESSION['nom'] = $nom;
+
+      header("Location: profil.php?success=1");
+      exit();
+    } catch (PDOException $e) {
+      die("Erreur lors de l'insertion : " . $e->getMessage());
+    }
+  }
 }
 
+// Récupération des données du profil
+if (isset($_SESSION["nom"])) {
+  try {
+    $stmt = $pdo->prepare("SELECT * FROM profil WHERE nom_candidat = ? ORDER BY id_candidat DESC LIMIT 1");
+    $stmt->execute([$_SESSION["nom"]]);
+    $profil = $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (PDOException $e) {
+    die("Erreur lors de la récupération du profil : " . $e->getMessage());
+  }
+}
+
+$successMessage = '';
+if(isset($_GET['success']) && $_GET['success'] == '1') {
+  $successMessage = '<div class="alert alert-success">Profil mis à jour avec succès !</div>';
+}
 ?>
 
 <!DOCTYPE html>
