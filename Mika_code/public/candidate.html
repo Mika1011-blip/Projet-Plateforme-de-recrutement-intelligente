@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candidate Compatibility Checker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <h1>Candidate Portal</h1>
+  <form id="files_upload">
+    <div>
+      <label for="cv-input">Your CV:</label><br>
+      <textarea id="cv-input" rows="6" cols="60" placeholder="Enter your CV here..."></textarea>
+    </div>
+    <div>
+      <label for="offer-input">Job Offer:</label><br>
+      <textarea id="offer-input" rows="6" cols="60" placeholder="Enter a job offer here..."></textarea>
+    </div>
+    <div>
+      <button type="submit" id="compute-btn">Compute Compatibility</button>
+    </div>
+  </form>
+  <div id="compatibility-section">
+    <h2>Compatibility:</h2>
+    <p id="compatibility-result">N/A</p>
+  </div>
+  <script type="module" src="candidate.js"></script>
+</body>
+</html>
